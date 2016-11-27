@@ -68,7 +68,7 @@ python eshop/manage.py runserver
 ## Application Overview
 
 Application specification doc is [here.](/task_spec.rst)
-Applicatin display Read-Only Meny of active Products and Categories @ index url. Under /admin site logged in users are allowed to add Categories and Products.
+Application display Read-Only Menu of active Products and Categories @ index url. Under /admin site logged in users are allowed to add Categories and Products.
 
 Additional behaviour assumptions done:
 + Model Validations added

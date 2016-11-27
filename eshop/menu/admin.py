@@ -5,10 +5,12 @@ from menu.models import Product, Category, CategoryHierarchy
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'price_display', 'active')
+
  
 class CategoryHierarchyInline(admin.StackedInline):
     model = CategoryHierarchy
     fk_name = 'parent_category'
+
  
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):

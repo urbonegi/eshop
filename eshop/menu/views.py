@@ -6,6 +6,10 @@ from menu.utils import pretty
 
 
 def menu(request):
+    """
+    View creates read only page with
+    Product and Category Menu
+    """
     template = loader.get_template('index.html')
     cats = Category.objects.active().filter(level=0)
     final_list = pretty(cats, indent=0, menu_list=[])
