@@ -1,0 +1,290 @@
+[
+    {
+        "model": "menu.product",
+        "pk": 1,
+        "fields": {
+            "name": "grape",
+            "active": true,
+            "price": "1.24"
+        }
+    },
+    {
+        "model": "menu.product",
+        "pk": 2,
+        "fields": {
+            "name": "milk",
+            "active": true,
+            "price": "2.00"
+        }
+    },
+    {
+        "model": "menu.product",
+        "pk": 3,
+        "fields": {
+            "name": "chair",
+            "active": true,
+            "price": "100.70"
+        }
+    },
+    {
+        "model": "menu.product",
+        "pk": 4,
+        "fields": {
+            "name": "tomato",
+            "active": false,
+            "price": "55.00"
+        }
+    },
+    {
+        "model": "menu.category",
+        "pk": 1,
+        "fields": {
+            "name": "fruit",
+            "active": true,
+            "level": 5,
+            "products": [
+                1
+            ]
+        }
+    },
+    {
+        "model": "menu.category",
+        "pk": 2,
+        "fields": {
+            "name": "vegetables",
+            "active": true,
+            "level": 5,
+            "products": [
+                4
+            ]
+        }
+    },
+    {
+        "model": "menu.category",
+        "pk": 7,
+        "fields": {
+            "name": "living room furniture",
+            "active": true,
+            "level": 3,
+            "products": [
+                3
+            ]
+        }
+    },
+    {
+        "model": "menu.category",
+        "pk": 8,
+        "fields": {
+            "name": "Presents",
+            "active": false,
+            "level": 3,
+            "products": []
+        }
+    },
+    {
+        "model": "menu.category",
+        "pk": 9,
+        "fields": {
+            "name": "Clothes",
+            "active": true,
+            "level": 3,
+            "products": []
+        }
+    },
+    {
+        "model": "menu.category",
+        "pk": 11,
+        "fields": {
+            "name": "Pigu.ru",
+            "active": true,
+            "level": 1,
+            "products": []
+        }
+    },
+    {
+        "model": "menu.category",
+        "pk": 12,
+        "fields": {
+            "name": "Pigu.lt",
+            "active": true,
+            "level": 1,
+            "products": [
+                4
+            ]
+        }
+    },
+    {
+        "model": "menu.category",
+        "pk": 13,
+        "fields": {
+            "name": "meat",
+            "active": false,
+            "level": 4,
+            "products": []
+        }
+    },
+    {
+        "model": "menu.category",
+        "pk": 14,
+        "fields": {
+            "name": "bread",
+            "active": false,
+            "level": 4,
+            "products": []
+        }
+    },
+    {
+        "model": "menu.category",
+        "pk": 15,
+        "fields": {
+            "name": "Pigu eshop",
+            "active": true,
+            "level": 0,
+            "products": []
+        }
+    },
+    {
+        "model": "menu.category",
+        "pk": 16,
+        "fields": {
+            "name": "everyday goods",
+            "active": true,
+            "level": 2,
+            "products": []
+        }
+    },
+    {
+        "model": "menu.category",
+        "pk": 17,
+        "fields": {
+            "name": "fruit and vegetable",
+            "active": true,
+            "level": 4,
+            "products": []
+        }
+    },
+    {
+        "model": "menu.category",
+        "pk": 18,
+        "fields": {
+            "name": "food",
+            "active": true,
+            "level": 3,
+            "products": []
+        }
+    },
+    {
+        "model": "menu.category",
+        "pk": 20,
+        "fields": {
+            "name": "furniture",
+            "active": true,
+            "level": 2,
+            "products": []
+        }
+    },
+    {
+        "model": "menu.categoryhierarchy",
+        "pk": 26,
+        "fields": {
+            "parent_category": 15,
+            "child_category": 12
+        }
+    },
+    {
+        "model": "menu.categoryhierarchy",
+        "pk": 27,
+        "fields": {
+            "parent_category": 15,
+            "child_category": 11
+        }
+    },
+    {
+        "model": "menu.categoryhierarchy",
+        "pk": 34,
+        "fields": {
+            "parent_category": 16,
+            "child_category": 9
+        }
+    },
+    {
+        "model": "menu.categoryhierarchy",
+        "pk": 35,
+        "fields": {
+            "parent_category": 17,
+            "child_category": 2
+        }
+    },
+    {
+        "model": "menu.categoryhierarchy",
+        "pk": 36,
+        "fields": {
+            "parent_category": 17,
+            "child_category": 1
+        }
+    },
+    {
+        "model": "menu.categoryhierarchy",
+        "pk": 40,
+        "fields": {
+            "parent_category": 18,
+            "child_category": 17
+        }
+    },
+    {
+        "model": "menu.categoryhierarchy",
+        "pk": 41,
+        "fields": {
+            "parent_category": 18,
+            "child_category": 13
+        }
+    },
+    {
+        "model": "menu.categoryhierarchy",
+        "pk": 43,
+        "fields": {
+            "parent_category": 16,
+            "child_category": 18
+        }
+    },
+    {
+        "model": "menu.categoryhierarchy",
+        "pk": 44,
+        "fields": {
+            "parent_category": 16,
+            "child_category": 8
+        }
+    },
+    {
+        "model": "menu.categoryhierarchy",
+        "pk": 45,
+        "fields": {
+            "parent_category": 12,
+            "child_category": 16
+        }
+    },
+    {
+        "model": "menu.categoryhierarchy",
+        "pk": 48,
+        "fields": {
+            "parent_category": 18,
+            "child_category": 14
+        }
+    },
+    {
+        "model": "menu.categoryhierarchy",
+        "pk": 50,
+        "fields": {
+            "parent_category": 20,
+            "child_category": 7
+        }
+    },
+    {
+        "model": "menu.categoryhierarchy",
+        "pk": 51,
+        "fields": {
+            "parent_category": 12,
+            "child_category": 20
+        }
+    }
+]

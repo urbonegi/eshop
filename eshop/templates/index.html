@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>EShop Menu Application</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"-->
+</head>
+<body>
+
+<div class="container-fluid">
+<h2>Welcome {{user.username}} to EShop Application.</h2>
+{% if not user.username %}<h4>Please login here: </h4>
+<a href="/admin/login/?next=/"><button class="info">Login</button></a>{% else %}
+<div class="row"> 
+<div class="col-md-2 col-lg-2"><a href="/admin/menu/category/add/"><button class="info">Add New Category</button></a></div>
+<div class="col-md-2 col-lg-2"><a href="/admin/menu/product/add/"><button>Add New Product</button></a></div>
+</div>{% endif %}
+<h4>Category and Product Menu:</h4>
+
+{% if not menu %}There are no active categories to show.{% endif %}
+
+<pre>{{menu|linebreaksbr}}</pre>
+</div>
+</body>
+</html>

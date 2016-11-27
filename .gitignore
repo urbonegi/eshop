@@ -1,0 +1,4 @@
+env/
+.tox/
+*.py[cod]
+*db.sqlite3
