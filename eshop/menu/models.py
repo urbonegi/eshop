@@ -109,11 +109,6 @@ class CategoryHierarchy(models.Model):
 
 
 @receiver(post_save, sender=CategoryHierarchy)
-def on_save_signal(sender, instance, **kwargs):
-    cat = Category.objects.get(id=instance.child_category_id)
-    update_cat_level(cat)
-
-
 @receiver(post_delete, sender=CategoryHierarchy)
-def on_delete_signal(sender, instance, **kwargs):
+def on_manipulate_signal(sender, instance, **kwargs):
     update_cat_level(Category.objects.get(id=instance.child_category_id))
