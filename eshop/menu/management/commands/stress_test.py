@@ -19,7 +19,7 @@ class Command(BaseCommand):
         print(u'Creating of 10000 new products and adding them to the DB takes ths time in secs: ', end_1 - start)
         
         print(u'Test getting all products from DB for menu view...')
-        cats = Category.objects.filter(level=0).filter(active=True)
+        cats = Category.objects.active().filter(level=0)
         final_list = pretty(cats, indent=0, menu_list=[])
         end_2 = time.time()
         print(u'Getting ordered menu structure from DB takes this time in secs: ', end_2 - end_1)

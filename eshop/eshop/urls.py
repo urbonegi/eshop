@@ -19,5 +19,6 @@ from menu import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^new/', views.new_menu),
     url(r'^$', views.menu),
 ]
