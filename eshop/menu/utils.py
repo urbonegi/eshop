@@ -8,9 +8,9 @@ def count_active_products(cat_list, product_number=0):
     for c in cat_list:
         if c.sub_categories.exists():
             product_number = product_number + count_active_products(c.sub_categories.active(),
-                                                                    product_number=c.products.count())
+                                                                    product_number=len(c.active_products))
         else:
-            product_number = product_number + c.products.count()
+            product_number = product_number + len(c.active_products)
     return product_number
 
 def count_all_products(cat_list, product_number=0):
@@ -21,9 +21,9 @@ def count_all_products(cat_list, product_number=0):
     for c in cat_list:
         if c.sub_categories.all().exists():
             product_number = product_number + count_all_products(list(c.sub_categories.all()),
-                                                                 product_number=len(c.active_products))
+                                                                 product_number=c.products.count())
         else:
-            product_number = product_number + len(c.active_products)
+            product_number = product_number + c.products.count()
     return product_number
 
 
