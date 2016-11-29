@@ -39,23 +39,19 @@ def count_categoriy_level(cat, level=0):
         level = count_categoriy_level(parent, level=(level+1))
     return level
 
-
-def pretty(cat_list, indent=0, menu_list=[]):
+def pretty(cat_list, cat_dict={}, product_dict={}, hierarchy_dict={}, indent=0, menu_list=[]):
     """
     Function create an output list with all active categories and products
     with indentation based on its level and extra info:
     price and product in category count
     """
-    for cat in cat_list:
-        if cat.active:
-            menu_list.append(u' ' * indent + u'-' + cat.name + u'({})'.format(cat.active_child_product_count))
-            print(cat.name)
-            for product in cat.active_products:
-                print(product)
-                menu_list.append(u' ' * (indent + 1) + u'-' + product.name + u'\u20AC' + u'({})'.format(product.price))
-            if cat.sub_categories.active():
-                menu_list = pretty(list(cat.sub_categories.active()), indent+1, menu_list=menu_list)
-            print(u'------')
+    for cat_id in cat_list:
+        if cat_dict[cat_id]["active"]:
+            menu_list.append(u' ' * indent + u'-' + cat_dict[cat_id]["name"] + u'({})'.format(cat_dict[cat_id]["active_inner_products"]))
+            for product_id in cat_dict[cat_id]["products"]:
+                menu_list.append(u' ' * (indent + 1) + u'-' + product_dict[product_id]["name"] + u'\u20AC' + u'({})'.format(product_dict[product_id]["price"]))
+            if hierarchy_dict.get(cat_id):
+                menu_list = pretty(hierarchy_dict[cat_id], cat_dict=cat_dict, product_dict=product_dict, hierarchy_dict=hierarchy_dict, indent=indent+1, menu_list=menu_list)
     return menu_list
 
 

@@ -24,6 +24,15 @@ class CategoryTestCase(TestCase):
         with self.assertRaises(ValidationError):
             CategoryHierarchy.objects.create(parent_category=test_cat, child_category=test_cat)
 
+    def test_category_added_once(self):
+        """Assign the same sub category to the same parent category is forbidden by validation"""
+        print(u'test no multiple same category assign')
+        test_cat = Category.objects.get(name='Pigu eshop')
+        parent_cat = Category.objects.create(name='parent', active=True)
+        CategoryHierarchy.objects.create(parent_category=parent_cat, child_category=test_cat)
+        with self.assertRaises(ValidationError):
+            CategoryHierarchy.objects.create(parent_category=parent_cat, child_category=test_cat)
+
     def test_category_no_multiple_parents(self):
         """It is forbidden to have multiple parent categories"""
         print(u'test no multiple parents')
@@ -76,6 +85,10 @@ class CategoryTestCase(TestCase):
         self.assertEqual(Category.objects.get(name='food').level, 2)
         self.assertEqual(Category.objects.get(name='Pigu.lt').level, 0)
 
+    def test_product_count_sinals(self):
+        """On Product, Category and CategoryHierarchy data delete/save update inner_product_count"""
+        
+
     def test_correct_count_of_products(self):
         """Testing active product count"""
         print(u'test correct product count')
@@ -101,8 +114,11 @@ class CategoryTestCase(TestCase):
     def test_correct_final_product_list(self):
         """Testing all product count"""
         print(u'Test menu list for menu tree view')
-        cats = Category.objects.active().filter(level=0)
-        final_list = pretty(cats, indent=0, menu_list=[])
+        product_dict = Product.objects.product_json()
+        hierarchy_dict = CategoryHierarchy.objects.mapping_json()
+        cat_dict, active_level_0 = Category.objects.category_json()
+
+        final_list = pretty(active_level_0, cat_dict=cat_dict, product_dict=product_dict, hierarchy_dict=hierarchy_dict, indent=0, menu_list=[])
         self.assertEqual((len(final_list)), 13)
         parent_cat = Category.objects.get(name='Pigu eshop')
         parent_cat.active = False

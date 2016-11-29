@@ -26,4 +26,4 @@ class CategoryAdmin(admin.ModelAdmin):
     def product_list(self, obj):
         return [x.name for x in obj.products.all()]
 
-    list_display = ('name', 'level', 'all_child_product_count', 'active_child_product_count', 'child_cat', 'parent_cat', 'product_list', 'active')
+    list_display = ('name', 'level', 'all_child_product_count', 'active_child_product_count', 'active_inner_products', 'child_cat', 'parent_cat', 'product_list', 'active')

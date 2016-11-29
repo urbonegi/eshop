@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
-from menu.models import Category
+from menu.models import Category, Product, CategoryHierarchy
 from menu.utils import pretty
 from django.core import serializers
 import json
@@ -13,9 +13,12 @@ def menu(request):
     Product and Category Menu
     """
     template = loader.get_template('index.html')
-    cats = Category.objects.active().filter(level=0)
-    cat_list = list(cats)
-    final_list = pretty(cat_list, indent=0, menu_list=[])
+    product_dict = Product.objects.product_json()
+    hierarchy_dict = CategoryHierarchy.objects.mapping_json()
+    cat_dict, active_level_0 = Category.objects.category_json()
+
+    final_list = pretty(active_level_0, cat_dict=cat_dict, product_dict=product_dict, hierarchy_dict=hierarchy_dict, indent=0, menu_list=[])
+
     context = {
         'menu': u'\n'.join(final_list),
     }

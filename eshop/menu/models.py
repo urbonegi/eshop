@@ -8,24 +8,57 @@ from django.db.models import Prefetch
 
 class CategoryManager(models.Manager):
     """
-    Active manager defines active queryset filter
-    Prefetching m2m fields for performance
+    Category object query manager
     """
     def active(self):
+        product_query = Product.objects.filter(active=True).only('id')
         cat_query = Category.objects.filter(active=True)
-        product_query = Product.objects.filter(active=True).only('name', 'price')
         return self.prefetch_related(Prefetch('sub_categories',
                                               queryset=cat_query),
                                      Prefetch('products',
                                               queryset=product_query, to_attr='active_products')).filter(active=True)
 
+    def all_prefetched(self):
+        product_query = Product.objects.filter(active=True).only('id')
+        return self.prefetch_related(Prefetch('products',
+                                              queryset=product_query, to_attr='active_products'))
+
+    def category_json(self):
+        obj = self.all_prefetched()
+        data_dict = dict()
+        active_level_0 = []
+        for cat in obj:
+            data_dict[cat.id] = {"name": cat.name, "products": [x.id for x in cat.active_products], "active": cat.active, "level": cat.level, "active_inner_products": cat.active_inner_products}
+            if cat.active and cat.level == 0:
+                active_level_0.append(cat.id)
+        return data_dict, active_level_0
+
 
 class ProductManager(models.Manager):
     """
-    Active Product manager defines active queryset filter
+    Product object query manager
     """
     def active(self):
         return self.filter(active=True)
+
+    def product_json(self):
+        obj = self.filter(active=True).values("id", "name", "price")
+        product_data_dict = dict()
+        for product in obj:
+            product_data_dict[product["id"]] = {"name": product["name"], "price": product["price"]}
+        return product_data_dict
+
+class CategoryHierarchyManager(models.Manager):
+    """
+    Category Hierarchy object query manager
+    """
+ 
+    def mapping_json(self):
+        obj = self.values("parent_category", "child_category")
+        data_dict = dict()
+        for hier in obj:
+            data_dict.setdefault(hier["parent_category"], []).append(hier["child_category"])
+        return data_dict
 
 
 class Product(models.Model):
@@ -62,6 +95,7 @@ class Category(models.Model):
     products = models.ManyToManyField(Product, blank=True)
     sub_categories = models.ManyToManyField('self', symmetrical=False, through='CategoryHierarchy', blank=True, through_fields=('parent_category', 'child_category'), related_name='parent_categories')
     level = models.IntegerField(editable=False, default=0, db_index=True)
+    active_inner_products = models.IntegerField(editable=False, default=0)
 
     objects = CategoryManager()
 
@@ -91,6 +125,8 @@ class CategoryHierarchy(models.Model):
     """
     parent_category = models.ForeignKey(Category, related_name='parent_category')
     child_category = models.ForeignKey(Category, related_name='child_category')
+
+    objects = CategoryHierarchyManager()
  
     def __str__(self):
         return self.child_category.name
@@ -121,8 +157,8 @@ class CategoryHierarchy(models.Model):
         """
         It is forbidden to have same subcategory assigned multiple times
         """
-        parent_cat = Category.objects.get(id=self.parent_category_id)
-        if self._child_category_cache.id in [x.id for x in parent_cat.sub_categories.all()]:
+        parent_cat = Category.objects.filter(id=self.parent_category_id)
+        if parent_cat and self._child_category_cache.id in [x.id for x in parent_cat[0].sub_categories.all()] and not self.id:
             raise ValidationError(u'Category {0} is already assigned to this category'.format(self._child_category_cache.name))
 
     def validate_one_parent(self):
@@ -135,8 +171,32 @@ class CategoryHierarchy(models.Model):
                                   u'parent category: {0}'.format(parent_cats[0].name))
 
 
+def update_child_product_count(obj):
+    """
+    Funcion to determine and update given obj
+    and parent cats inner product count
+    """
+    Category.objects.filter(id=obj.id).update(active_inner_products=obj.active_child_product_count)
+    for parent in obj.parent_categories.all():
+        update_child_product_count(parent)
+
+
 @receiver(post_save, sender=CategoryHierarchy)
 @receiver(post_delete, sender=CategoryHierarchy)
-def on_manipulate_signal(sender, instance, **kwargs):
+def on_manipulate_signal_hierachy(sender, instance, **kwargs):
     update_cat_level(Category.objects.get(id=instance.child_category_id))
+    update_child_product_count(Category.objects.get(id=instance.parent_category_id))
+
+
+@receiver(post_save, sender=Product)
+@receiver(post_delete, sender=Product)
+def on_manipulate_signal_product(sender, instance, **kwargs):
+    for cat in instance.category_set.all():
+        update_child_product_count(cat)
+
+
+@receiver(post_save, sender=Category)
+@receiver(post_delete, sender=Category)
+def on_manipulate_signal_category(sender, instance, **kwargs):
+    update_child_product_count(instance)
 
