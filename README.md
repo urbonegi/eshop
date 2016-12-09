@@ -22,7 +22,7 @@ pyvenv env
 pip install -r requirements_run.txt
 ```
 
-### Setup postgres db
+### Setup postgres DB
 Create eshop database and eshopuser. Assuming postgres DB on localhost. Modify database settings @ eshop/settings.py
 
 ```
