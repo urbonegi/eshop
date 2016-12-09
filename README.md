@@ -41,7 +41,7 @@ python eshop/manage.py migrate
 ```
 
 ### Running stress test
-Testing application performance when 10 000 active products added to the DB.
+Testing application performance when 10 000 active products added to the DB with many categories and subcategories
 
 ```bash
 python eshop/manage.py stress_test
